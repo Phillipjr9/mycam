@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Camera and projection permissions -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.CAPTURE_SECURE_VIDEO_OUTPUT" />
+    
+    <!-- For accessing camera characteristics -->
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="Virtual Camera"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.VirtualCamera"
+        tools:targetApi="31">
+        
+        <!-- FileProvider for sharing voice notes -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.virtualcamera.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="Virtual Camera"
+            android:theme="@style/Theme.VirtualCamera">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <activity
+            android:name=".LicenseActivity"
+            android:exported="false"
+            android:label="License Management"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:label="About Virtual Camera"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <activity
+            android:name=".DeviceInfoActivity"
+            android:exported="false"
+            android:label="Device Information"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <activity
+            android:name=".VoiceChangerActivity"
+            android:exported="false"
+            android:label="Voice Changer"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <activity
+            android:name=".EnhancedSettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        
+        <!-- Media Projection Service -->
+        <service 
+            android:name=".MediaProjectionService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
+        
+        <!-- Virtual Camera Service (for future expansion) -->
+        <service 
+            android:name=".VirtualCameraService"
+            android:exported="false" />
+        
+    </application>
+
+</manifest>
