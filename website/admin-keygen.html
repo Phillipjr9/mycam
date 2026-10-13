@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Camera - Admin Key Generator</title>
+    <meta name="description" content="Admin tool to generate activation keys for Virtual Camera users">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #6200EE;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        h2 {
+            color: #333;
+            margin: 25px 0 15px;
+            font-size: 20px;
+        }
+        
+        p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #6200EE;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #6200EE;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background: #3700B3;
+        }
+        
+        .btn-secondary {
+            background: #fff;
+            color: #6200EE;
+            border: 2px solid #6200EE;
+        }
+        
+        .btn-secondary:hover {
+            background: #6200EE;
+            color: #fff;
+        }
+        
+        .key-output {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .key-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .info-box {
+            background: #e8f5e8;
+            border-left: 4px solid #4CAF50;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 4px solid #FF9800;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .error-box {
+            background: #ffebee;
+            border-left: 4px solid #F44336;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+        
+        .stat-card strong {
+            color: #6200EE;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Virtual Camera - Admin Key Generator</h1>
+        <p>Generate activation keys for users after payment confirmation. Each key is cryptographically signed and tied to ONE device only.</p>
+        
+        <div class="warning-box">
+            <strong>⚠️ ADMIN ONLY</strong><br>
+            This page should be password-protected. Do NOT expose it publicly.
+        </div>
+        
+        <h2>Generate Activation Key</h2>
+        
+        <form id="keyForm">
+            <div class="form-group">
+                <label for="userEmail">User Email (for records)</label>
+                <input type="email" id="userEmail" placeholder="user@example.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="deviceId">Device ID (from user's app)</label>
+                <input type="text" id="deviceId" placeholder="Enter device ID from user" required>
+                <p style="font-size: 14px; color: #666; margin-top: 5px;">
+                    User can find their device ID in the app under Settings or by tapping "Get Device ID" button.
+                </p>
+            </div>
+            
+            <div class="form-group">
+                <label for="licenseType">License Type</label>
+                <select id="licenseType" required>
+                    <option value="">Select license type...</option>
+                    <option value="free_trial">Free Trial (7 days)</option>
+                    <option value="pro_monthly">Pro Monthly ($9.99)</option>
+                    <option value="pro_yearly">Pro Yearly ($79.99)</option>
+                    <option value="lifetime">Lifetime ($149.99)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="paymentProof">Payment Proof (reference)</label>
+                <input type="text" id="paymentProof" placeholder="Payment ID, Telegram username, etc.">
+            </div>
+            
+            <div class="form-group">
+                <label for="notes">Notes</label>
+                <textarea id="notes" rows="3" placeholder="Any additional notes..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Generate Key</button>
+            <button type="reset" class="btn btn-secondary" style="margin-left: 10px;">Clear</button>
+        </form>
+        
+        <div id="keyOutput" style="display: none;">
+            <h2>Generated Activation Key</h2>
+            
+            <div class="info-box">
+                <strong>✓ Key Generated Successfully</strong><br>
+                This key will work ONLY on the specified device. It cannot be transferred to another device.
+            </div>
+            
+            <div class="grid">
+                <div class="stat-card">
+                    <strong>License Type</strong>
+                    <span id="outputLicenseType">-</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Device ID</strong>
+                    <span id="outputDeviceId">-</span>
+                </div>
+                <div class="stat-card">
+                    <strong>Expiration</strong>
+                    <span id="outputExpiration">-</span>
+                </div>
+            </div>
+            
+            <label class="key-label">Activation Key (send to user):</label>
+            <div class="key-output" id="generatedKey"></div>
+            
+            <button onclick="copyKey()" class="btn btn-secondary" style="margin-top: 10px;">
+                <i>Copy Key to Clipboard</i>
+            </button>
+            
+            <h3 style="margin-top: 30px;">Instructions for User:</h3>
+            <ol style="color: #666; line-height: 1.8;">
+                <li>Open the Virtual Camera app on your device</li>
+                <li>Tap "Activate Pro" button</li>
+                <li>Enter the activation key above</li>
+                <li>Tap "Activate" - the app will validate the key</li>
+                <li>If successful, Pro features will be unlocked</li>
+            </ol>
+            
+            <div class="warning-box" style="margin-top: 20px;">
+                <strong>Important:</strong><br>
+                - Each key works on ONE device only (tied to Device ID)
+                - Copying the APK to another device will NOT work
+                - The app checks device binding on startup
+                - If user changes device, they need a new key
+            </div>
+        </div>
+        
+        <h2 style="margin-top: 40px;">Key Validation</h2>
+        <p>Verify that a user's key is valid:</p>
+        
+        <form id="validateForm" style="margin-bottom: 20px;">
+            <div class="form-group">
+                <label for="keyToValidate">Activation Key to Validate</label>
+                <input type="text" id="keyToValidate" placeholder="Paste the user's activation key">
+            </div>
+            <button type="submit" class="btn btn-primary">Validate Key</button>
+        </form>
+        
+        <div id="validationOutput" style="display: none;">
+            <h3>Validation Result</h3>
+            <div id="validationResult"></div>
+        </div>
+        
+        <h2 style="margin-top: 40px;">User Records</h2>
+        <p>Track which users have been issued keys:</p>
+        <div id="userRecords">
+            <p style="color: #666;">No records yet. Keys will be saved to localStorage.</p>
+        </div>
+    </div>
+    
+    <script>
+        // Key generation logic (JavaScript implementation of the same algorithm as Java)
+        function generateKey(licenseType, deviceId) {
+            const expirationDate = calculateExpirationDate(licenseType);
+            const signature = generateSignature(licenseType, deviceId, expirationDate);
+            return `VC-${licenseType}-${deviceId}-${expirationDate}-${signature}`;
+        }
+        
+        function calculateExpirationDate(licenseType) {
+            const now = new Date();
+            const result = new Date(now);
+            
+            switch (licenseType) {
+                case 'free_trial':
+                    result.setDate(now.getDate() + 7);
+                    break;
+                case 'pro_monthly':
+                    result.setMonth(now.getMonth() + 1);
+                    break;
+                case 'pro_yearly':
+                    result.setFullYear(now.getFullYear() + 1);
+                    break;
+                case 'lifetime':
+                    result.setFullYear(now.getFullYear() + 99);
+                    break;
+                default:
+                    result.setDate(now.getDate() + 7);
+            }
+            
+            return result.getTime();
+        }
+        
+        function generateSignature(licenseType, deviceId, expirationDate) {
+            const data = `${licenseType}|${deviceId}|${expirationDate}|SECRET_KEY_2026_VC`;
+            return sha256(data);
+        }
+        
+        // SHA-256 implementation for JavaScript
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        
+        // Form submission
+        document.getElementById('keyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const userEmail = document.getElementById('userEmail').value;
+            const deviceId = document.getElementById('deviceId').value;
+            const licenseType = document.getElementById('licenseType').value;
+            const paymentProof = document.getElementById('paymentProof').value;
+            const notes = document.getElementById('notes').value;
+            
+            if (!userEmail || !deviceId || !licenseType) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Generate the key
+            const key = await generateKey(licenseType, deviceId);
+            
+            // Display the results
+            document.getElementById('outputLicenseType').textContent = formatLicenseType(licenseType);
+            document.getElementById('outputDeviceId').textContent = deviceId;
+            document.getElementById('outputExpiration').textContent = formatDate(calculateExpirationDate(licenseType));
+            document.getElementById('generatedKey').textContent = key;
+            
+            // Show output
+            document.getElementById('keyOutput').style.display = 'block';
+            
+            // Save to records
+            saveUserRecord(userEmail, deviceId, licenseType, key, paymentProof, notes);
+            
+            // Scroll to output
+            document.getElementById('keyOutput').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        // Validation form
+        document.getElementById('validateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const key = document.getElementById('keyToValidate').value;
+            if (!key) {
+                alert('Please enter a key to validate');
+                return;
+            }
+            
+            const result = await validateKey(key);
+            displayValidationResult(key, result);
+        });
+        
+        async function validateKey(key) {
+            try {
+                const parts = key.split('-');
+                if (parts.length !== 5 || parts[0] !== 'VC') {
+                    return { valid: false, error: 'Invalid key format' };
+                }
+                
+                const licenseType = parts[1];
+                const deviceId = parts[2];
+                const expirationDate = parseInt(parts[3]);
+                const signature = parts[4];
+                
+                const expectedSignature = await generateSignature(licenseType, deviceId, expirationDate);
+                
+                if (signature !== expectedSignature) {
+                    return { valid: false, error: 'Invalid signature' };
+                }
+                
+                if (Date.now() > expirationDate) {
+                    return { valid: false, error: 'Key has expired' };
+                }
+                
+                return {
+                    valid: true,
+                    licenseType: licenseType,
+                    deviceId: deviceId,
+                    expirationDate: expirationDate,
+                    expiresInDays: Math.ceil((expirationDate - Date.now()) / (1000 * 60 * 60 * 24))
+                };
+            } catch (e) {
+                return { valid: false, error: 'Invalid key: ' + e.message };
+            }
+        }
+        
+        function displayValidationResult(key, result) {
+            const outputDiv = document.getElementById('validationOutput');
+            const resultDiv = document.getElementById('validationResult');
+            
+            if (result.valid) {
+                resultDiv.innerHTML = `
+                    <div class="info-box">
+                        <strong>✓ Key is VALID</strong><br><br>
+                        <strong>License Type:</strong> ${formatLicenseType(result.licenseType)}<br>
+                        <strong>Device ID:</strong> ${result.deviceId}<br>
+                        <strong>Expiration:</strong> ${formatDate(result.expirationDate)}<br>
+                        <strong>Days Remaining:</strong> ${result.expiresInDays === -1 ? 'Unlimited' : result.expiresInDays}
+                    </div>
+                `;
+            } else {
+                resultDiv.innerHTML = `
+                    <div class="error-box">
+                        <strong>✗ Key is INVALID</strong><br><br>
+                        Error: ${result.error}
+                    </div>
+                `;
+            }
+            
+            outputDiv.style.display = 'block';
+        }
+        
+        function copyKey() {
+            const key = document.getElementById('generatedKey').textContent;
+            navigator.clipboard.writeText(key).then(function() {
+                alert('Activation key copied to clipboard!');
+            }).catch(function(err) {
+                // Fallback for older browsers
+                const textarea = document.createElement('textarea');
+                textarea.value = key;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Activation key copied to clipboard!');
+            });
+        }
+        
+        function formatLicenseType(type) {
+            const types = {
+                'free_trial': 'Free Trial',
+                'pro_monthly': 'Pro Monthly',
+                'pro_yearly': 'Pro Yearly',
+                'lifetime': 'Lifetime'
+            };
+            return types[type] || type;
+        }
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function saveUserRecord(email, deviceId, licenseType, key, paymentProof, notes) {
+            // Get existing records or create empty array
+            let records = JSON.parse(localStorage.getItem('userRecords') || '[]');
+            
+            // Add new record
+            records.push({
+                id: Date.now(),
+                email: email,
+                deviceId: deviceId,
+                licenseType: licenseType,
+                key: key,
+                paymentProof: paymentProof,
+                notes: notes,
+                date: new Date().toISOString()
+            });
+            
+            // Save back to localStorage
+            localStorage.setItem('userRecords', JSON.stringify(records));
+            
+            // Update the display
+            updateUserRecordsDisplay();
+        }
+        
+        function updateUserRecordsDisplay() {
+            const records = JSON.parse(localStorage.getItem('userRecords') || '[]');
+            const container = document.getElementById('userRecords');
+            
+            if (records.length === 0) {
+                container.innerHTML = '<p style="color: #666;">No records yet.</p>';
+                return;
+            }
+            
+            let html = '<table style="width: 100%; border-collapse: collapse;">';
+            html += '<tr style="background: #f8f9fa;"><th style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">Email</th>';
+            html += '<th style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">License</th>';
+            html += '<th style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">Device ID</th>';
+            html += '<th style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">Date</th>';
+            html += '<th style="padding: 10px; text-align: left; border-bottom: 1px solid #eee;">Actions</th></tr>';
+            
+            records.forEach(record => {
+                const date = new Date(record.date);
+                html += '<tr style="border-bottom: 1px solid #eee;">';
+                html += `<td style="padding: 10px;">${record.email}</td>`;
+                html += `<td style="padding: 10px;">${formatLicenseType(record.licenseType)}</td>`;
+                html += `<td style="padding: 10px; font-family: monospace; font-size: 12px;">${record.deviceId.substring(0, 16)}...</td>`;
+                html += `<td style="padding: 10px;">${date.toLocaleDateString()}</td>`;
+                html += `<td style="padding: 10px;"><button onclick="copyRecordKey(${record.id})" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;">Copy Key</button></td>`;
+                html += '</tr>';
+            });
+            
+            html += '</table>';
+            container.innerHTML = html;
+        }
+        
+        function copyRecordKey(id) {
+            const records = JSON.parse(localStorage.getItem('userRecords') || '[]');
+            const record = records.find(r => r.id == id);
+            
+            if (record) {
+                navigator.clipboard.writeText(record.key).then(function() {
+                    alert('Key copied to clipboard!');
+                });
+            }
+        }
+        
+        // Load records on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            updateUserRecordsDisplay();
+        });
+    </script>
+</body>
+</html>

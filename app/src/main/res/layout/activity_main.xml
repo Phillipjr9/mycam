@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/colorBackground"
+    tools:context=".MainActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+            
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Virtual Camera"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="REAL Virtual Camera Implementation"
+                android:textSize="14sp"
+                android:textColor="@color/colorText"
+                android:textStyle="italic"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:id="@+id/statusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status: Not Running"
+                android:textSize="16sp"
+                android:textColor="@color/colorStatusStopped"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="8dp"/>
+
+            <!-- License Status -->
+            <TextView
+                android:id="@+id/licenseStatusTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="License: Not Activated"
+                android:textSize="14sp"
+                android:textColor="@color/colorStatusWarning"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Activation Button -->
+            <Button
+                android:id="@+id/activateButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Activate Pro"
+                android:backgroundTint="#FF9800"
+                android:textColor="@color/colorBackground"
+                android:layout_marginBottom="16dp"/>
+            
+            <!-- Device ID Button -->
+            <Button
+                android:id="@+id/deviceIdButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Get Device ID (For Activation)"
+                android:backgroundTint="#2196F3"
+                android:textColor="@color/colorBackground"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Current Source Info -->
+            <TextView
+                android:id="@+id/sourceInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No source selected"
+                android:textSize="14sp"
+                android:textColor="@color/colorText"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"/>
+
+            <!-- Main Controls -->
+            <Button
+                android:id="@+id/startButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Start Virtual Camera"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/colorBackground"
+                android:layout_marginBottom="16dp"/>
+
+            <Button
+                android:id="@+id/stopButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Stop Virtual Camera"
+                android:backgroundTint="@color/colorStatusStopped"
+                android:textColor="@color/colorBackground"
+                android:enabled="false"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Source Selection -->
+            <Button
+                android:id="@+id/selectSourceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select Camera Source"
+                android:backgroundTint="@color/colorAccent"
+                android:textColor="@color/colorBackground"
+                android:enabled="false"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Settings Button -->
+            <Button
+                android:id="@+id/settingsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:backgroundTint="#666666"
+                android:textColor="@color/colorBackground"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- License Button -->
+            <Button
+                android:id="@+id/licenseButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="License Management"
+                android:backgroundTint="#6200EE"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- About Button -->
+            <Button
+                android:id="@+id/aboutButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="About"
+                android:backgroundTint="#03DAC6"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Device Info Button -->
+            <Button
+                android:id="@+id/deviceInfoButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Device Information"
+                android:backgroundTint="#FF9800"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Voice Changer Button (Pro Feature) -->
+            <Button
+                android:id="@+id/voiceChangerButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Voice Changer (Male ↔ Female)"
+                android:backgroundTint="#E91E63"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="How This Works:"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="• Uses MediaProjection API to create virtual display\n\n• Captures frames from video files, images, or physical camera\n\n• Other apps can use this as a camera source\n\n• Works without root (user permission required)"
+                android:textSize="14sp"
+                android:textColor="@color/colorText"
+                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="24dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Note: This is a NEW, ORIGINAL implementation using public Android APIs. It does NOT copy MYCAM."
+                android:textSize="12sp"
+                android:textColor="#666666"
+                android:textStyle="italic"
+                android:layout_gravity="center_horizontal"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

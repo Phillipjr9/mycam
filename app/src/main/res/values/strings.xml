@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Virtual Camera</string>
+    <string name="start_service">Start Virtual Camera</string>
+    <string name="stop_service">Stop Virtual Camera</string>
+    <string name="select_source">Select Video Source</string>
+    <string name="select_image">Select Image</string>
+    <string name="select_video">Select Video File</string>
+    <string name="status">Status: Not Running</string>
+    <string name="running">Status: Virtual Camera Active</string>
+    <string name="camera_permission_required">Camera permission is required to use the virtual camera</string>
+    <string name="storage_permission_required">Storage permission is required to select video files</string>
+    <string name="overlay_permission_required">Overlay permission is required for some features</string>
+    <string name="projection_permission_required">Screen recording permission is required</string>
+    <string name="app_description">A real virtual camera implementation using MediaProjection API</string>
+    
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    
+    <!-- String Arrays -->
+    <string-array name="resolutions">
+        <item>320x240 (Low)</item>
+        <item>640x480 (Medium)</item>
+        <item>1280x720 (HD) - Recommended</item>
+        <item>1920x1080 (Full HD)</item>
+    </string-array>
+    
+    <string-array name="fps_options">
+        <item>15 FPS</item>
+        <item>24 FPS</item>
+        <item>30 FPS - Recommended</item>
+        <item>60 FPS</item>
+    </string-array>
+    
+    <string-array name="sources">
+        <item>Video File</item>
+        <item>Static Image</item>
+        <item>Physical Camera (Back)</item>
+        <item>Physical Camera (Front)</item>
+    </string-array>
+</resources>
